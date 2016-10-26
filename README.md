@@ -2,7 +2,7 @@
 
 ## Problem Definition:
 
-[NYC Deptartment Of Education - Call for Innovation](http://www.nyc.gov/html/cfi/html/DOE/index.html#collapse1)
+[NYC Deptartment Of Education - Call for Innovation](http://www.nyc.gov/html/cfi/html/DOE/index.html#collapse1)  
 **New York City is growing fast—we need to ensure we plan for our students.**
 There are exciting changes coming to New York City neighborhoods, including new construction, community rezonings and a major expansion of inclusionary housing. Additionally, the City has seen unprecedented growth in recent years. Since 2010, the city population has grown by 4.6%—the highest rate of growth since the 1920s. These trends make it incredibly important to have accurate data for city planning purposes—especially when it comes to accommodating a rapidly growing Pre-K-12 student population. An enhanced student population prediction model with more granular insights will significantly help the NYC Department of Education efficiently plan for enrollment changes and enhance school zoning efforts, so that all public school students have equal access to the resources they need.
 
