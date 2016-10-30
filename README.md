@@ -26,7 +26,8 @@ Annual school aged population by zip code
 **Features:**
 	Official Data will be released to the team on November 1. 
 	Other data to be combined – By Zip Code:  
-		From Child Care Data Set  
+		From 
+[Child Care Data Set](https://data.ny.gov/Human-Services/Child-Care-Regulated-Programs-Map/s8uq-s4wq )    
 * Facility Opened Date (# of new facilities each year) 
 * Facility Status (# of facilities each year) 
 * Increase/Decrease in # of facilities from previous year 
@@ -35,7 +36,7 @@ Annual school aged population by zip code
 * Total Preschool Capacity each year 
 * School Aged Capacity each year 
 * Increase/Decrease in each capacity type each year
-From NYC Home Sales Data 
+From [NYC Home Sales Data](http://www1.nyc.gov/site/finance/taxes/property-annualized-sales-update.page) 
 * Median Home Value each year 
 * YoY Median Home Value 
 * 5 Year Diff 
@@ -43,14 +44,13 @@ From NYC Home Sales Data
 
 
 
-### Data:
+### Other Data:
 **Housing Maintenance Code Violations:** https://data.cityofnewyork.us/Housing-Development/Housing-Maintenance-Code-Violations/wvxf-dwi5  
 **Child Care Center Info:**  https://data.ny.gov/Human-Services/Child-Care-Regulated-Programs-Map/s8uq-s4wq  
 **Grade School Assessment:** https://data.nysed.gov/downloads.php  
 **Zillow:** Time Series home and rental prices: http://www.zillow.com/research/data/#median-home-value  
-### Instance:
-### Label:
-### Features:
+
+## To Be Determined:
 ### Problem Type: 
 ### Evaluation Metric:
 ### Training Data: 
