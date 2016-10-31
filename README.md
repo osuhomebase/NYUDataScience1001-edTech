@@ -11,9 +11,7 @@ The New York City Department of Education is the largest school district in the 
 
 
 ## Project Description 
-The most useful information for this business problem would most likely be something like expected population change by neighborhood.  So for a specific zip code, say 11238, the model should predict the expected population 1, 3, 5, or 10 years from now.  
-
-A follow up to this would be a report of all zip codes in the five boroughs, ranked by percentage and total population change.
+The city needs help projecting the number of prospective students at different age groups by city block with projections at 1-year, 2-year and 5-year increments.
 
 ## Project Details
 
@@ -25,9 +23,8 @@ Annual school aged population by city block
 * **Variable** population
 
 **Features:**
-	Official Data will be released to the team on November 1. 
-	Other data to be combined – By Zip Code:  
-		From 
+
+From 
 [Child Care Data Set](https://data.ny.gov/Human-Services/Child-Care-Regulated-Programs-Map/s8uq-s4wq )    
 * Facility Opened Date (# of new facilities each year) 
 * Facility Status (# of facilities each year) 
