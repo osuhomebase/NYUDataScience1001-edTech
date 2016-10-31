@@ -18,10 +18,11 @@ A follow up to this would be a report of all zip codes in the five boroughs, ran
 ## Project Details
 
 **Data Instance:**
-Annual school aged population by zip code 
+Annual school aged population by city block 
 
-**Target Variable:**
-	Population
+**Target Variable:**  
+* **Detail** the number of prospective students at different age groups by city block with projections at 1-year, 2-year and 5-year increments.  We probably need a separate model for each age group/projection. 
+* **Variable** population
 
 **Features:**
 	Official Data will be released to the team on November 1. 
