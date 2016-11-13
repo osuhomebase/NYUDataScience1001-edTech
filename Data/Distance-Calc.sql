@@ -1,11 +1,18 @@
-select * from census_tracts_list_36 
+
 
 
 DECLARE @latCompare numeric(12,7)
 DECLARE @lngCompare numeric(12,7)
+DECLARE @GEOIDCompare varchar(25)
+
+
 SET @latCompare = 42.6637001	
 SET @lngCompare = -73.7369472
-DECLARE cursCompare CURSOR FOR SELECT INTPTLAT, INTPTLONG, GEOID FROM census_tracts_list_36
+
+DECLARE curs CURSOR FOR SELECT INTPTLAT, INTPTLONG, GEOID FROM census_tracts_list_36
+
+
+DECLARE cursCompare CURSOR FOR SELECT INTPTLAT, INTPTLONG, GEOID FROM census_tracts_list_36 WHERE GEOID <> @GEOIDCompare
 OPEN cursCompare
 
 DECLARE @Neighbor1 varchar(25)
@@ -21,7 +28,7 @@ DECLARE @GEOID varchar(25)
 DECLARE @neighbors TABLE(id int, lat numeric(12,7), lng numeric(12,7), distance numeric(12,7),geoid varchar(25))
 DECLARE @cnt INT = 1;
 
-	DECLARE @distance numeric(12,7)
+DECLARE @distance numeric(12,7)
 WHILE @cnt <= 6
 BEGIN
    INSERT INTO @neighbors(id,lat,lng,distance,geoid)
@@ -29,6 +36,8 @@ BEGIN
    SET @cnt = @cnt + 1;
 END;
 FETCH NEXT FROM cursCompare INTO @lat, @lng, @geoID
+
+SET @cnt = 1
 
 DECLARE @distance1 numeric(12,7)
 DECLARE @distance2 numeric(12,7)
@@ -50,22 +59,89 @@ BEGIN
 	if @distance < @distance1
 	BEGIN
 		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
-			FROM @neighbors one INNER JOIN @neighbors two ON one.geoid = two.geoid AND one.id = 6 and two.id=5
+			FROM @neighbors one, @neighbors two WHERE one.id = 6 and two.id=5
 		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
-			FROM @neighbors one INNER JOIN @neighbors two ON one.geoid = two.geoid AND one.id = 5 and two.id=4
+			FROM @neighbors one, @neighbors two WHERE one.id = 5 and two.id=4
 		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
-			FROM @neighbors one INNER JOIN @neighbors two ON one.geoid = two.geoid AND one.id = 4 and two.id=3
+			FROM @neighbors one, @neighbors two WHERE one.id = 4 and two.id=3
 		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
-			FROM @neighbors one INNER JOIN @neighbors two ON one.geoid = two.geoid AND one.id = 3 and two.id=2
+			FROM @neighbors one, @neighbors two WHERE one.id = 3 and two.id=2
 		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
-			FROM @neighbors one INNER JOIN @neighbors two ON one.geoid = two.geoid AND one.id = 2 and two.id=1
-		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, @GEOID = @GEOID WHERE id = 1
+			FROM @neighbors one, @neighbors two WHERE one.id = 2 and two.id=1
+		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, GEOID = @GEOID WHERE id = 1
 		SET @distance6 = @distance5
 		SET @distance5 = @distance4
 		SET @distance4 = @distance3
 		SET @distance3 = @distance2
 		SET @distance2 = @distance1
 		SET @distance1 = @distance
+		SET @cnt = @cnt+1
+		if @CNT = 5
+		BEGIN
+			SELECT @distance,@distance1, @distance2,@distance3, @distance4, @distance5,@distance6
+			SELECT * from @neighbors 
+		END
+		if @CNT = 6
+		BEGIN
+			SELECT @distance,@distance1, @distance2
+			SELECT * from @neighbors 
+			break
+		END
+	END
+	ELSE IF @distance < @distance2
+	BEGIN
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 6 and two.id=5
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 5 and two.id=4
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 4 and two.id=3
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 3 and two.id=2
+		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, GEOID = @GEOID WHERE id = 2
+		SET @distance6 = @distance5
+		SET @distance5 = @distance4
+		SET @distance4 = @distance3
+		SET @distance3 = @distance2
+		SET @distance2 = @distance
+	END
+	ELSE IF @distance < @distance3
+	BEGIN
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 6 and two.id=5
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 5 and two.id=4
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 4 and two.id=3
+		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, GEOID = @GEOID WHERE id = 3
+		SET @distance6 = @distance5
+		SET @distance5 = @distance4
+		SET @distance4 = @distance3
+		SET @distance3 = @distance
+	END
+	ELSE IF @distance < @distance4
+	BEGIN
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 6 and two.id=5
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 5 and two.id=4
+		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, GEOID = @GEOID WHERE id = 4
+		SET @distance6 = @distance5
+		SET @distance5 = @distance4
+		SET @distance4 = @distance
+	END
+	ELSE IF @distance < @distance5
+	BEGIN
+		UPDATE one SET one.distance = two.distance, one.geoid = two.geoid, one.lat = two.lat, one.lng = two.lng 
+			FROM @neighbors one, @neighbors two WHERE one.id = 6 and two.id=5
+		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, GEOID = @GEOID WHERE id = 5
+		SET @distance6 = @distance5
+		SET @distance5 = @distance
+	END
+	ELSE IF @distance < @distance6
+	BEGIN
+		UPDATE @neighbors SET distance = @distance, lat = @lat, lng = @lng, GEOID = @GEOID WHERE id = 6
+		SET @distance6 = @distance
 	END
 	
 
@@ -75,5 +151,3 @@ END
 close cursCompare
 deallocate cursCompare
 
-SELECT @distance
-SELECT * FROM @neighbors
