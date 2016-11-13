@@ -16,6 +16,11 @@ UPDATE nycDistrict20 SET previousYear = [Count] WHERE SchoolYear = 2001
 -- Figure out the YoY Percentage Growth
 UPDATE nycDistrict20 SET OneYearPercentGrowth = (convert(numeric(9,6),[Count])-PreviousYear)/[PreviousYear] WHERE PreviousYear > 0
 
+-- set some base cases for when PreviousYear is equal to zero
+UPDATE nycDistrict20 SET OneYearPercentGrowth = 1 WHERE PreviousYear = 0 AND [count] > 0
+UPDATE nycDistrict20 SET OneYearPercentGrowth = 0 WHERE PreviousYear = 0 AND [count] = 0
+
+
 -- Figure out the YoY Actual Growth
 UPDATE nycDistrict20 SET OneYearGrowth = [Count] - [PreviousYear] 
 
@@ -37,6 +42,10 @@ UPDATE nycDistrict20 SET previousThreeYear = [Count] WHERE SchoolYear IN(2001,20
 -- Figure out the Year over **Three** Year Percentage Growth
 UPDATE nycDistrict20 SET ThreeYearPercentGrowth = (convert(numeric(9,6),[Count])-PreviousThreeYear)/PreviousThreeYear WHERE PreviousThreeYear > 0
 
+-- set some base cases for when PreviousThreeYear is equal to zero
+UPDATE nycDistrict20 SET ThreeYearPercentGrowth = 1 WHERE PreviousThreeYear = 0 AND [count] > 0
+UPDATE nycDistrict20 SET ThreeYearPercentGrowth = 0 WHERE PreviousThreeYear = 0 AND [count] = 0
+
 -- Figure out the YoY Actual Growth
 UPDATE nycDistrict20 SET ThreeYearGrowth = [Count] - PreviousThreeYear 
 
@@ -57,6 +66,9 @@ UPDATE nycDistrict20 SET previousFiveYear = [Count] WHERE SchoolYear IN(2001,200
 -- Figure out the Year over **Five** Year Percentage Growth
 UPDATE nycDistrict20 SET FiveYearPercentGrowth = (convert(numeric(9,6),[Count])-PreviousFiveYear)/PreviousFiveYear WHERE PreviousFiveYear > 0
 
+-- set some base cases for when PreviousFiveYear is equal to zero
+UPDATE nycDistrict20 SET FiveYearPercentGrowth = 1 WHERE previousFiveYear = 0 AND [count] > 0
+UPDATE nycDistrict20 SET FiveYearPercentGrowth = 0 WHERE previousFiveYear = 0 AND [count] = 0
 
 -- Figure out the YoY Actual Growth
 UPDATE nycDistrict20 SET FiveYearGrowth = [Count] - PreviousFiveYear 
