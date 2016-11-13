@@ -30,5 +30,3 @@ close curs
 deallocate curs
 
 select * from nyc311Counts
-select * from nyc311Requests
-select * from census_tracts_list_36
