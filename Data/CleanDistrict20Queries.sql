@@ -20,13 +20,8 @@ UPDATE nycDistrict20 SET OneYearPercentGrowth = (convert(numeric(9,6),[Count])-P
 UPDATE nycDistrict20 SET OneYearPercentGrowth = 1 WHERE PreviousYear = 0 AND [count] > 0
 UPDATE nycDistrict20 SET OneYearPercentGrowth = 0 WHERE PreviousYear = 0 AND [count] = 0
 
-
 -- Figure out the YoY Actual Growth
 UPDATE nycDistrict20 SET OneYearGrowth = [Count] - [PreviousYear] 
-
--- Set Year over 
-
-
 
 --- Extract previous **three** year ---
 UPDATE d1 SET d1.previousThreeYear = d2.[count] FROM nycDistrict20 d1
@@ -73,6 +68,11 @@ UPDATE nycDistrict20 SET FiveYearPercentGrowth = 0 WHERE previousFiveYear = 0 AN
 -- Figure out the YoY Actual Growth
 UPDATE nycDistrict20 SET FiveYearGrowth = [Count] - PreviousFiveYear 
 
+-- Set Target Variables
+-- Default = 0
+UPDATE nycDistrict20 SET TargetVariable = 0
+-- 1 if increase over previous year
+UPDATE nycDistrict20 SET TargetVariable = 1 WHERE [Count] > PreviousYear
 
 -- Just to verify results --
 SELECT * FROM nycDistrict20 d1
