@@ -1,6 +1,5 @@
 -- set School Year = single integer year for easier data handling --
 update nycDistrict20 SET SchoolYear = left(SchoolYear,4)
-
 -- look for missing values
 DECLARE @tract varchar(25)
 DECLARE @2010Tract varchar(25)
@@ -33,6 +32,17 @@ END
 CLOSE curs
 DEALLOCATE curs
 
+--- Extract previous grade ---
+UPDATE d1 SET d1.PreviousGrade = d2.count FROM nycDistrict20 d1
+	INNER JOIN nycDistrict20 d2 on d1.censusTract = d2.CensusTract AND d1.SchoolYear = d2.SchoolYear
+	AND d2.GradeLevel = (d1.GradeLevel - 1)
+
+-- Anytime the previousGrade is null, set to zero for any grade level greater than Kindergarten --
+UPDATE nycDistrict20 SET PreviousGrade = 0 WHERE PreviousGrade IS NULL AND GradeLevel > 0
+
+-- Set previousGrade = count where GradeLevel is Kindergarten.  Thought is there is this may be more accurate than assuming zero. --
+UPDATE nycDistrict20 SET PreviousGrade = Count WHERE GradeLevel = 0
+
 --- Extract previous year ---
 UPDATE d1 SET d1.previousYear = d2.[count] FROM nycDistrict20 d1
 	INNER JOIN nycDistrict20 d2 on d1.censusTract = d2.CensusTract AND d1.GradeLevel = d2.GradeLevel
@@ -41,7 +51,7 @@ UPDATE d1 SET d1.previousYear = d2.[count] FROM nycDistrict20 d1
 -- Anytime the previous Year is null, set to zero for any grade level greater than Kindergarten --
 UPDATE nycDistrict20 SET previousYear = 0 WHERE previousYear IS NULL AND SchoolYear > 2001
 
--- Set previousGrade = count where GradeLevel is Kindergarten.  Thought is there is this may be more accurate than assuming zero. --
+-- Set previousYear = count where GradeLevel is Kindergarten.  Thought is there is this may be more accurate than assuming zero. --
 UPDATE nycDistrict20 SET previousYear = [Count] WHERE SchoolYear = 2001
 
 -- Figure out the YoY Percentage Growth
@@ -113,3 +123,4 @@ SELECT * FROM nycDistrict20 d1
 	AND d1.GradeLevel=3
 ORDER BY d1.CensusTract, d1.SchoolYear, d1.GradeLevel
 
+select * from nycDistrict20 where censusTract = 18
