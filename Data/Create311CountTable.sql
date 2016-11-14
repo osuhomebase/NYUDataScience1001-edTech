@@ -3,24 +3,18 @@ SELECT distinct Replace(Replace(Replace(Replace(Replace(Replace([Complaint Type]
 DECLARE @sql varchar(max)
 DECLARE @type varchar(50) 
 DECLARE @first tinyint
-SET @first = 0
 
 DECLARE curs CURSOR FOR SELECT distinct Replace(Replace(Replace(Replace(Replace(Replace([Complaint Type],' ',''),'/',''),'-',''),'(',''),')',''),'&','')  from nyc311requests
 OPEN curs
 
-SET @sql = 'CREATE TABLE nyc311counts ('
+SET @sql = 'CREATE TABLE nyc311counts (
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[CensusTract] [varchar](50) NULL,
+	[CensusYear] [int] NULL CONSTRAINT [DF_nyc311counts_CensusYear]  DEFAULT ((2000))'
 FETCH NEXT FROM curs INTO @type
 WHILE @@FETCH_STATUS=0
 BEGIN
-	IF @first = 0
-	BEGIN
-		SET @sql = @sql + ' ' + @type + ' int DEFAULT 0'
-		SET @first = 1
-	END
-	ELSE
-	BEGIN
-		SET @sql = @sql + ',' + @type + ' int DEFAULT 0'
-	END
+	SET @sql = @sql + ',' + @type + ' int DEFAULT 0'
 	
 	FETCH NEXT FROM curs INTO @type
 END
