@@ -1,6 +1,37 @@
 -- set School Year = single integer year for easier data handling --
 update nycDistrict20 SET SchoolYear = left(SchoolYear,4)
 
+-- look for missing values
+DECLARE @tract varchar(25)
+DECLARE @2010Tract varchar(25)
+DECLARE @zip varchar(5)
+DECLARE curs CURSOR FOR SELECT DISTINCT TRACT, Zip, [2010 Census Tract] FROM zipMapper
+OPEN curs
+
+FETCH NEXT FROM curs INTO @tract, @zip, @2010Tract
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	DECLARE @year INT
+	SET @year = 2001
+	WHILE @year < 2010
+	BEGIN
+		DECLARE @grade INT
+		SET @grade = 0
+		WHILE @grade < 6
+		BEGIN
+			IF (SELECT COUNT(*) FROM nycDistrict20 WHERE SchoolYear = @year AND GradeLevel = @grade AND LongTract = @tract) = 0
+			BEGIN
+				INSERT INTO nycDistrict20 (CensusTract, schoolYear,GradeLevel, [count],LongTract, Zip)
+				VALUES(@2010Tract,@year,@grade,0,@tract,@zip)
+			END
+			SET @grade = @grade + 1
+		END
+		SET @year = @year + 1
+	END
+	FETCH NEXT FROM curs INTO @tract, @zip, @2010Tract
+END
+CLOSE curs
+DEALLOCATE curs
 
 --- Extract previous year ---
 UPDATE d1 SET d1.previousYear = d2.[count] FROM nycDistrict20 d1
@@ -74,6 +105,7 @@ UPDATE nycDistrict20 SET TargetVariable = 0
 -- 1 if increase over previous year
 UPDATE nycDistrict20 SET TargetVariable = 1 WHERE [Count] > PreviousYear
 
+
 -- Just to verify results --
 SELECT * FROM nycDistrict20 d1
 	INNER JOIN nycDistrict20 d2 on d1.censusTract = d2.CensusTract AND d1.GradeLevel = d2.GradeLevel
@@ -81,4 +113,3 @@ SELECT * FROM nycDistrict20 d1
 	AND d1.GradeLevel=3
 ORDER BY d1.CensusTract, d1.SchoolYear, d1.GradeLevel
 
- select * from nycDistrict20
