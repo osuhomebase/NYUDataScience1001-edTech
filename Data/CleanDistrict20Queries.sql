@@ -73,7 +73,7 @@ UPDATE d1 SET d1.previousThreeYear = d2.[count] FROM nycDistrict20 d1
 UPDATE nycDistrict20 SET previousThreeYear = 0 WHERE previousThreeYear IS NULL AND SchoolYear > 2003
 
 -- Set Thought is there is this may be more accurate than assuming zero. --
-UPDATE nycDistrict20 SET previousThreeYear = [Count] WHERE SchoolYear IN(2001,2002,2003)
+UPDATE nycDistrict20 SET previfousThreeYear = [Count] WHERE SchoolYear IN(2001,2002,2003)
 
 -- Figure out the Year over **Three** Year Percentage Growth
 UPDATE nycDistrict20 SET ThreeYearPercentGrowth = (convert(numeric(9,6),[Count])-PreviousThreeYear)/PreviousThreeYear WHERE PreviousThreeYear > 0
@@ -110,10 +110,15 @@ UPDATE nycDistrict20 SET FiveYearPercentGrowth = 0 WHERE previousFiveYear = 0 AN
 UPDATE nycDistrict20 SET FiveYearGrowth = [Count] - PreviousFiveYear 
 
 -- Set Target Variables
+
+-- 
+UPDATE nycDistrict20 SET TargetVariable = NULL 
 -- Default = 0
-UPDATE nycDistrict20 SET TargetVariable = 0
+UPDATE nycDistrict20 SET TargetVariable = 0 WHERE SchoolYear <= 2007
 -- 1 if increase over previous year
-UPDATE nycDistrict20 SET TargetVariable = 1 WHERE [Count] > PreviousYear
+UPDATE d2 SET TargetVariable = 1 
+FROM nycDistrict20 d1 INNER JOIN nycDistrict20 d2 ON d1.CensusTract = d2.CensusTract and d1.GradeLevel = d2.GradeLevel and d1.SchoolYear = d2.SchoolYear + 2
+WHERE d1.[Count] > d2.[Count] + 2
 
 
 -- Just to verify results --
@@ -122,5 +127,3 @@ SELECT * FROM nycDistrict20 d1
 	AND d2.SchoolYear = (d1.SchoolYear - 3)
 	AND d1.GradeLevel=3
 ORDER BY d1.CensusTract, d1.SchoolYear, d1.GradeLevel
-
-select * from nycDistrict20 where censusTract = 18
