@@ -58,3 +58,14 @@ Some of our data prep is outlined above, but generally we spent a lot of time ma
 | ------------- | ------------- |
 | ![figure 1](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/CensusTractCounts.png) | ![figure 1](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/CensusTractCountsBelow10.png) |
 
+We were concerned that a regression where such a large number of tracts have zero population would produce noisy results, or results that make no sense.  For example, the regression may return a negative number of students for a specific census tract, or if it has a 95% confidence interval of +/- 3 students, then any result given on a tract with a small number of students to begin with is essentially a guess.  
+
+As such, we focused on classifying whether a census tract would increase the total number of students or not so we prepared our data with that as our target variable.   We started with 1 year change, but we can easily modify our target for 2, 3, 4, or 5 years and re-run our analysis.  
+
+## Feature Engineering:
+Once we chose our target, we built a baseline model engineered exclusively from the given data set.  For our baseline model, we used very simple features, including Count, Total Count, Total Count by Grade, and Total Count By Tract.  The totals are for the entire district.  Using a decision tree classifier and ranking on entropy, we found the feature importance ranking shown in Figure 2.  Figure 3 shows features ranked by accuracy.   
+
+| Figure 2 | Figure 3 |
+| ------------- | ------------- |
+| ![Figure 2](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/BaselineModel.png) | ![Figure 3](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/BaselineModelFeatures.png) |
+
