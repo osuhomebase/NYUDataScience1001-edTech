@@ -51,44 +51,10 @@ We extracted features for 2006-2010 based on the category of 311 ticket and ende
 
 As outlined in the Data Preparation section, by engineering the data provided by the contest, we were able to extract favorable features that resulted in surprisingly good AUC scores.  With this discovery, we ultimately decided that the effort required engineering features based on the provided data set would provide more utility and value than scraping, cleaning, and engineering external data and scrapped all other leads.  More info on how we came to this conclusion is outlined in the data preparation section below.
 
+## Data Preparation
+Some of our data prep is outlined above, but generally we spent a lot of time mapping our data to census tract or zip code.  Initially we thought that a regression problem would be the obvious fit for this challenge, but we decided to prepare the data for a classification problem instead.  Looking at the data, the distribution of counts by census tract/school year/grade level looks almost geometric, with a significant number of tracts with zero students, as shown in Figure 1
 
-**Data Instance:**
-Annual school aged population by city block 
+| Figure 1 |
+| ------------- |
+| |
 
-**Target Variable:**  
-* **Detail** the number of prospective students at different age groups by city block with projections at 1-year, 2-year and 5-year increments.  We probably need a separate model for each age group/projection. 
-* **Variable** population
-
-**Features:**
-
-From 
-[Child Care Data Set](https://data.ny.gov/Human-Services/Child-Care-Regulated-Programs-Map/s8uq-s4wq )    
-* Facility Opened Date (# of new facilities each year) 
-* Facility Status (# of facilities each year) 
-* Increase/Decrease in # of facilities from previous year 
-* Total Infant Capacity each year 
-* Total Toddler Capacity each year 
-* Total Preschool Capacity each year 
-* School Aged Capacity each year 
-* Increase/Decrease in each capacity type each year
-From [NYC Home Sales Data](http://www1.nyc.gov/site/finance/taxes/property-annualized-sales-update.page) 
-* Median Home Value each year 
-* YoY Median Home Value 
-* 5 Year Diff 
-* 10 Year Diff 
-
-
-
-### Other Data:
-**Housing Maintenance Code Violations:** https://data.cityofnewyork.us/Housing-Development/Housing-Maintenance-Code-Violations/wvxf-dwi5  
-**Child Care Center Info:**  https://data.ny.gov/Human-Services/Child-Care-Regulated-Programs-Map/s8uq-s4wq  
-**Grade School Assessment:** https://data.nysed.gov/downloads.php  
-**Zillow:** Time Series home and rental prices: http://www.zillow.com/research/data/#median-home-value  
-
-## To Be Determined:
-### Problem Type: 
-### Evaluation Metric:
-### Training Data: 
-* How are we sampling?  
-
-### Testing Data:
