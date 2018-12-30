@@ -69,3 +69,30 @@ Once we chose our target, we built a baseline model engineered exclusively from 
 | ------------- | ------------- |
 | ![Figure 2](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/BaselineModel.png) | ![Figure 3](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/BaselineModelFeatures.png) |
 
+Figure 4 shows an analysis of Area Under the ROC curve for decision matrix, logistic regression, and support vector machine.  Logistic regression seems to be the best algorithm, but we kept all three as we tuned more parameters and features.
+
+| Figure 4 |
+| ------------- |
+| ![Figure 4](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/BaselineAUCROC.png) |
+
+*The purpose of our baseline was to have something to compare against and improve upon.  Since eliciting features from external sources was proving to be difficult, we next engineered several features from the existing dataset as a starting point. The initial set of engineered features follows:*  
+#*TotalCount = Total number of students for a given year across all tract and grade*  
+#*TotalCountByGrade = Total number of students for a given year and grade across all tract*  
+#*TotalCountByTract = Total number of students for a given year and tract across all grade*  
+#*TotalCountByZip = Total number of studetns for a given year and zip across all grade*  
+#*TotalCountByZipGrade = Total number of students for a given year, zip and grade*  
+#*TotalCountByTractGrade = Same as Count // can be removed*  
+#*PrevGradeCount = Total number of students from prior grade for a given year and tract*  
+#*e.g, for year 2010, tract 18, grade 5, its PrevGradeCount will be Count from year 2010, tract 18 and grade 4*  
+#*PrevGradeCountmavg3 = 3 year average of PrevGradeCount*  
+#*PrevGradeCountmavg5 = 5 year average of PreveGradeCount*  
+#*OneYearGrowth = one year growth rate of Count for a given tract and grade*  
+#*ThreeYearGrowth = three year growth rate of Count for a given tract and grade*  
+#*OneYearGrowthmavg3 = 3 year average of OneYearGrowth*  
+#*ThreeYearGrowthmavg3 = 3 year average of ThreeYearGrowth*  
+#*Y = Target variable 1 = Increase in count in the next year, 0 = decrease/stay the same in the next year*  
+#*NeighborCount = Total number of students in the six closest geographic tracts for a given year and tract and grade*  
+#*NeighborThreeYearGrowthmavg = Combined 3 year average of PrevGradeCount*  
+#*NeighborThreeYearGrowth = Total number of students for a given year across all tract and grade*
+
+
