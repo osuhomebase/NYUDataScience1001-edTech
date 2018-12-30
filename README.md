@@ -173,7 +173,7 @@ When tuning the Logistic Regression results, we focused on three hyper parameter
 
 | Figure 18 |
 | ------------- |
-| ![Figure 18](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure18.png) |
+| ![Figure 18](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/FIgure18.png) |
 
 | Figure 19 |
 | ------------- |
