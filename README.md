@@ -147,3 +147,63 @@ Once we decided on a metric, the first thing we tuned was how the data was split
 | Figure 11 |
 | ------------- |
 | ![Figure 11](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure11.png) |
+
+Logistic regression consistently outperformed the other methods.  We also found that the difference in performance when changing the year that we split testing and training to be inconsistent and minimal.  With this, we determined that 2001-2007 testing and 2008-2009 data for training would be our best split.  Even though in the figure above, splitting on 2001-2005 testing and 2006-2009 training shows a better AUC, we felt 2001-2005 didn’t have enough data.  It also showed more variance each time we ran the model so we trusted the results using the original split the most.  This can also be seen looking at SVM.  It is interesting how the middle split performs better for SVM, but the book end splits perform better for logistic regression.  If we had time, it would be a good thought exercise to determine why.  We did not even try splitting on 2001-2008 training with only 2009 as our test data set because we felt the result would be too biased.
+
+Nonetheless, at this point, the last thing we wanted to tune before focusing in on a single model was the sort of long tail distribution of the counts.  Recall from Figure 1 that there are a significant number of tracts with fewer than 10 students per tract and in fact, within that subset, a significant number of tracts with zero students.  We wanted to test if the predictive features on the low population areas were the same or different than those on highly populated areas.  To do this, we split the data once again three different ways and compared results.
+
+| Figure 12 | Figure 13 |
+| ------------- | ------------- |
+| ![Figure 12](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure12.png) | ![Figure 13](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure13.png) |
+
+| Figure 14 | Figure 15 |
+| ------------- | ------------- |
+| ![Figure 14](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure14.png) | ![Figure 15](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure15.png) |
+
+| Figure 16 | Figure 17 |
+| ------------- | ------------- |
+| ![Figure 16](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure16.png) | ![Figure 17](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure17.png) |
+
+Overall we found that consistently the top 5 predictors for both small and large population tracts remained the same, but the relative importance differs.  Count is a much better predictor for larger population tracts, whereas previous grade count is a very strong predictor for low population tracts.  
+
+We got our best consistent performance when dividing the data on tracts with population of fewer than 10 students versus tracts with 10 or more students.  Also, throughout the entire experiment, we found that logistic regression consistently outperformed other methods.  Our final modeling task was tuning the actual logistic regression model. 
+
+When tuning the Logistic Regression results, we focused on three hyper parameters: the algorithm, L1 versus L2 regularization, and the value of C.  We did not expect regularization to have a major effect on our performance because our dimensionality is relatively low.  We do have a small sample size, however, with only about 5,000 samples so we thought it to be a worthy effort.  Figures 18 and 19 show the results of our initial analysis.
+
+
+| Figure 18 |
+| ------------- |
+| ![Figure 18](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure18.png) |
+
+| Figure 19 |
+| ------------- |
+| ![Figure 19](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure19.png) |
+
+From the data, it looks like, low and behold, the default parameters from sklearn are generally the best, however, for low density tracts, L1 regularization seems to perform a bit better.  To get a sense of feature weights for L2 vs L1, we compared the regularization paths using the same various values of C, but only on the liblinear solver, shown in Figures 20 and 21 below:
+
+
+| Figure 20 |
+| ------------- |
+| ![Figure 20](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure20.png) |
+
+| Figure 21 |
+| ------------- |
+| ![Figure 21](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure21.png) |
+
+In the data above, it looks like the sweet spot is C=1.  There are some features that appear to be much more important in low density tracts than in high density tracts.  It is hard to see, but we pretty much proved the obvious, as the blue line on top of all four regularization paths is Previous Grade Count.   For high density tracts, the one year growth average over three years is the best predictor.  
+
+To summarize, we found that our best model is a testing / training split on the year 2007 and by running separate models on low density tracts with fewer than 10 students and high density tracts with equal to or more than 10 students. We found that logistic regression seems to work best using the liblinear algorithm with a default C=1.  L1 regularization seems to work best for low density tracts, whereas method of regularization penalty does not seem to matter for higher density tracts.  We improved our performance from the baseline model from an AUC of .8 to an AUC consistently above .875 and as high as .88.
+
+## Deployment
+Overall, the model we generated is a good first step to solving the business problem, but certainly not the final step.  Primarily the model shows when there is a change, but does not tell us about the magnitude of the change.  An obvious flaw of this is exposed when looking at the population spike starting after 2007.  Our model would have predicted an increase, but not predict this accelerated growth behavior.  A good next iteration would be to add more classifications than simply if the tract will increase in school aged population or not.  We discussed sort of binning the classifications such as if the tract will increase or decrease by 1, 3, 5, 10 students or by bins of percentages.  We would need to discuss how money and resources are being allocated to school districts to determine the relative importance of knowing raw number of predicted change in student population versus a percent change, especially given that even in the small enclave of District 20 there is such a wide range of student populations, ranging from zero to 600 students in 133 census tracts.
+	
+In addition, before deploying we would also include some of the elusive data sets that we tried to find when the project started.  We tried hard to find data on consumer spending habits and birth data that we feel would provide extremely valuable features for solving this problem.  We also would extend the test and training data to beyond 2010.  We had a very difficult time extracting features prior to 2010, but the US Census has a fantastic data browser including a lot of household demographic data beyond 2010.  Data such as poverty rate, average household income, and education level attained would be great to analyze.  The census even has data on things like average commute time to work.  
+	
+It is worth mentioning how difficult the Department of Education made this task for the participants.  No information about the features or data was provided until the dataset was released in November.  The data set was not only surprisingly minimal, with only tract, year, grade level, and count of students, but it also did not include a definition of what a census tract even was.  The DOE also informed participants after Thanksgiving that 24 of the original 134 tracts provided were actually not part of the district we were supposed to be analyzing.  This helped explain wild results when analyzing neighboring tracts, but we had to put significant time into removing the tracts from the both the original and engineered data, which seems easy, but we had to recalculate all engineered features.
+	
+On the flip side, this is not a deployment consideration, but as a reflection starting out with such limited data helped our group recognize the importance of feature engineering and deeply understanding the hyper parameters of our model.  Out of necessity, we engineered features that we would have otherwise most likely not considered.  We ended up feeling as though these features were stronger than any of the other external data that we were looking to incorporate.  While frustrating, the barriers imposed by the contest probably helped us understand the lifecycle of a data science problem more so than if we had a good data set from the outset.
+  
+Once new features and more current data is inserted into our model, we would recommend essentially repeating the entire process every budget cycle.  Assuming budget cycles happen annually, the model can easily be retrained each year and analyzed for new trends in which features become more or less important.  There is no real production versus test environment where this model needs to be deployed as the end users would be consuming a report provided by a data scientist or analyst familiar with the data science.  As such, performance is not an issue.  
+  
+Finally, whoever consumes this data has a responsibility to ensure resources are allocated to Pre-K programs ethically.  Our proposed model after the enhancements mentioned in this section are implemented simply predicts the change in school aged population.  There are many other considerations when allocating resources for education, especially early education, where students come from varying degrees of privilege.  There is also the issue of kindergarten readiness.  The number of students about to enroll in Pre-K may not be indicative of the volume of resources required to prepare and support those who do enroll. 
+
