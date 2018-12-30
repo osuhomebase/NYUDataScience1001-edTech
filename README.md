@@ -95,4 +95,18 @@ Figure 4 shows an analysis of Area Under the ROC curve for decision matrix, logi
 #*NeighborThreeYearGrowthmavg = Combined 3 year average of PrevGradeCount*  
 #*NeighborThreeYearGrowth = Total number of students for a given year across all tract and grade*
 
+Most engineered features revolved around 1, 3, and 5 year moving averages along with averages by district and zip code.  We also engineered several features based on longitude and latitude obtained using the Census Tract provided and Census Geographic Services API.  These features generated counts and moving averages for the six nearest Census Tracts based on distance between the lat/lng provided by the API.  The thought was that perhaps changes in the surrounding area may be predictive of the specific census tract itself.
 
+Since all of these features were engineered from essentially an index and a target, we wanted to be sure that the each feature in the data we engineered was not just retelling the same story.  To help prove that we were not just restating the same original features in different ways, we looked at correlation coefficient of each engineered feature against every other feature.  The results can be seen in Figure 5:
+
+
+| Figure 5 |
+| ------------- |
+| ![Figure 5](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/CorrelationMatrix.png) |
+
+The results were obviously alarming.  There were a few highly positively correlated features that we expected.  The previous count, three year moving average, and five year moving average were highly correlated.  This makes sense and actually provides some peace of mind in that previous growth is a good indicator of future growth.   The concerning story that this data was telling us was all of the highly negatively correlated features.  What we found was that our test/train split was poorly designed and included look aheads.  With the original provided dataset, even though we were dealing with time series data, we thought it safe to split the data randomly since each row of data was independent of future and past rows.  Our engineered features, however, include data from future and past years as well as data from neighboring census tracts.  With this in mind, we split the test and training data based on year.  For our first attempt we split on the year 2007.  All data from 2001 through 2006 was used in our test dataset.  All data from 2007 to 2010 was used in our training dataset.  Note, with such a small training dataset to work with, we did not use a validation dataset, but instead used the testing dataset for validation since cross validation was not something that we could implement given the time series nature of the data.  After adjusting our testing and training split, we re-ran the correlation matrix and the results can be found in Figure 6.
+
+
+| Figure 6 |
+| ------------- |
+| ![Figure 6](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/CorrelationMatrix2.png) |
