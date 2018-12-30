@@ -26,10 +26,15 @@ The dataset included contained counts of DOE students:
 ●	Resided in census tracts located within Community School District 20  
 ●	Enrolled in any grade K-5  
 The given data set includes 4 fields:  
-| 2010 Census Tract	| A census tract is essentially a city block. |   
-| School Year	 | | 
-| Grade Level	| K through 5  |
-| Count of Students |	Based on audited register as of October 31st of the given school year.  |
+
+|   |  |
+| ------------- | ------------- |
+| 2010 Census Tract  | A census tract is essentially a city block.  |
+| School Year  |  |
+| Grade Level  | K through 5 |
+| Count of Students  | Based on audited register as of October 31st of the given school year. |
+
+
 
 In addition to the data provided, we scraped the internet for additional leads including the following:  
 ●	[Census Birth Data](http://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml)  
