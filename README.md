@@ -110,3 +110,40 @@ The results were obviously alarming.  There were a few highly positively correla
 | Figure 6 |
 | ------------- |
 | ![Figure 6](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/CorrelationMatrix2.png) |
+
+The results after modifying our splits are much better.  There are still a few highly correlated features, but they are on features where we would expect to see this. 
+
+Similar to the baseline, a Decision Tree Classifier was performed on the engineered dataset as well.  We used default hyper parameters at this point, but we developed a core framework where we could tune hyper parameters and add features as mentioned in Data Understanding over the next several weeks.  The results of our analysis are shown in Figures 7 and 8:
+
+| Figure 7 | Figure 8 |
+| ------------- | ------------- |
+| ![Figure 7](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/FeatureImportance2.png) | ![Figure 8](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/FeatureImportance3.png) |
+
+Again, similar to the baseline model, we compared the Area Under the ROC curve for Decision Matrix, Logistic Regression and Support Vector Machine with the new features.  Results shown in Figure 9.
+
+We noticed a slight improvement from the baseline on both accuracy and AUC.  Our best AUC was .866 using default parameters except a very large C for essentially no regularization.  Nonetheless, the AUC of .866 is very good.
+
+
+| Figure 9 |
+| ------------- |
+| ![Figure 9](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/AUCROC2.png) |
+
+Armed with this information, we decided that the cost of finding, cleaning, and engineering features from external data did not provide enough value to justify the cost.
+
+## Modeling & Evaluation
+We performed Decision Tree Classification, Logistic Regression and SVM, with various hyper parameters and we evaluated performance using an ROC curve and Lift.
+
+In terms of precision and recall, there are competing forces determining which is more important from a business perspective.  On one hand, precision is important because we assume the Department of Education has a limited budget and does not want to waste resources on school districts falsely identified as having significant growth.  On the other hand, from sort of an ethics standpoint, and certainly from the mission of the department, the DoE would not want to underfund a false negative.
+
+When tuning hyper parameters for each algorithm, we tried to take into account several evaluation metrics.  We ended up primarily using AUC as our deciding metric when determining best model.  Because we have competing forces in terms of true positive and false positive importance, we used the AUC because it provides a metric that tells us which model delivers the best overall performance.  We also looked at lift against our base model as shown below, however, because we also compared tweaking our test and train split by changing which year to split on, we could not use it as our final decision metric because it is not base rate invariant.
+
+Once we decided on a metric, the first thing we tuned was how the data was split.  One of the things we noticed when evaluating the data was how overall, the year over year growth for the entire district was fairly linear, but in 2007 growth accelerated as seen in Figure 10.  We wanted to capture a predictor of this acceleration without cannibalizing our training dataset so we ran through several scenarios with different testing / training year splits.  The results are shown in Figure 11.
+
+
+| Figure 10 |
+| ------------- |
+| ![Figure 10](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/GrowthByYear.png) |
+
+| Figure 11 |
+| ------------- |
+| ![Figure 11](https://github.com/osuhomebase/NYUDataScience1001-edTech/blob/master/Analysis/Figure11.png) |
